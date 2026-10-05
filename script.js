@@ -161,7 +161,8 @@ if (rsvpForm) {
       return;
     }
 
-    let msg = "Olá! 🦁 Confirmação de presença - 1º Aninho do Miguel:\n\n";
+    const lion = "\uD83E\uDD81";
+    let msg = "Olá! " + lion + " Confirmação de presença - 1º Aninho do Miguel:\n\n";
     msg += `*Nome:* ${name}\n`;
     msg += `*Telefone:* ${phone}\n`;
     msg += `*Pessoas:* ${count}\n`;
@@ -172,7 +173,7 @@ if (rsvpForm) {
     }
 
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/556196642823?text=${encoded}`, "_blank");
+    window.open(`https://api.whatsapp.com/send?phone=556196642823&text=${encoded}`, "_blank");
 
     if (feedback) {
       feedback.textContent = "Mensagem aberta no WhatsApp! ✓";

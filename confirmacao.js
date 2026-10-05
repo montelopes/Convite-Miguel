@@ -145,8 +145,9 @@ if (rsvpForm) {
     }
 
 
+    const lion = "\uD83E\uDD81";
     let msg =
-      "Olá! 🦁 Confirmação de presença - 1º Aninho do Miguel:\n\n";
+      "Olá! " + lion + " Confirmação de presença - 1º Aninho do Miguel:\n\n";
 
     msg += `*Nome:* ${name}\n`;
     msg += `*Telefone:* ${phone}\n`;
@@ -161,7 +162,7 @@ if (rsvpForm) {
     const encoded = encodeURIComponent(msg);
 
     window.open(
-      `https://wa.me/556196642823?text=${encoded}`,
+      `https://api.whatsapp.com/send?phone=556196642823&text=${encoded}`,
       "_blank"
     );
 
