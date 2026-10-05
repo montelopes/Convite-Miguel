@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miguel · 1º Aniversário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- Imagem de fundo da savana com Pride Rock e os leões -->
+    <div class="bg-photo"></div>
+    <div class="bg-overlay-top"></div>
+    <div class="bg-overlay-bottom"></div>
+
+    <!-- Cantos dourados ornamentais superiores -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+
+    <main class="content">
+      <!-- Cabeçalho espiritual / bênção -->
+      <p class="blessing-top anim-1">1º ANIVERSÁRIO</p>
+      <p class="blessing-title anim-1">Meu primeiro aninho</p>
+      <div class="gold-diamond anim-2">◆</div>
+      <br>
+      <div class="names-container anim-3">
+        <h2 class="name-first">Miguel</h2>
+      </div>
+      <br>
+      <!-- Data -->
+      <p class="subtitle-day anim-4">Sábado</p>
+      <div class="date-block anim-6">
+        <div class="date-row">
+          <span class="date-prefix">DIA</span>
+          <span class="date-num">31</span>
+          <span class="date-suffix">/10</span>
+        </div>
+        <p class="date-month">de Outubro de 2026 · 17h</p>
+      </div>
+      <br>
+      <!-- Local da Festa + Sticker do Simba Cub -->
+      <div class="location-wrapper anim-7">
+        <div class="location-content">
+          <div class="loc-header">
+            <span class="loc-icon"></span>
+            <span class="loc-label">Local da Festa:</span>
+          </div>
+          <p class="loc-venue">Espaço Villa Uno</p>
+          <p class="loc-address">Espaço para festa infatil </p>
+          <p class="loc-city"> St. Hab. Vicente Pires</p>
+        </div>
+        <img src="./imagens/simba_cub.png" alt="Simba" class="simba-cub" />
+      </div>
+      <br>
+      <!-- Botões de Ação -->
+      <div class="buttons anim-8">
+        <button class="btn ghost" id="storyBtn">
+          <span class="btn-icon">♡</span>
+          <span>MENSAGEM DOS PAIS</span>
+        </button>
+        <a href="https://maps.google.com/?q=Coco+Bambu+Shopping+DF+Plaza+Brasilia" target="_blank" class="btn ghost">
+          <span class="btn-icon">⊕</span>
+          <span>MAPA DO LOCAL</span>
+        </a>
+        <a class="btn solid" href="./confirmacao.html">
+          <span>CONFIRMAR PRESENÇA</span>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Mensagem dos Pais -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Mensagem dos pais">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal" aria-label="Fechar">×</button>
+      <div class="modal-lion"></div>
+      <h2 class="modal-title">Mensagem dos Pais</h2>
+      <div class="modal-text">
+        <p><strong>Há um ano, nossas vidas ficaram ainda mais felizes com a chegada do nosso pequeno Miguel.
+No dia 31 de outubro, às 17h, vamos comemorar o seu 1º aninho com muita alegria e, acima de tudo, gratidão a Deus por nos permitir viver esse primeiro ano tão cheio de amor.
+Preparamos tudo com muito carinho para celebrar esse momento ao lado das pessoas que amamos e que fazem parte da nossa história.</strong></p>
+      </div>
+      <div class="modal-divider"><span></span><span class="diamond">◆</span><span></span></div>
+        <h2 class="modal-title">Miguel</h2>
+    </div>
+  </div>
+
+  <audio id="bg-audio" preload="auto" loop>
+  <source src="./audio/Agorasim.mp3" type="audio/mpeg">
+</audio>
+
+  <script src="./script.js"></script>
+</body>
+</html>

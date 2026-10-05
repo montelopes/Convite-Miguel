@@ -1,0 +1,520 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --gold:       #e5b36a;
+  --gold-light: #fbe6bd;
+  --gold-glow:  rgba(230, 175, 95, 0.45);
+  --gold-dark:  #a97534;
+  --bg-dark:    #241309;
+  --bg-card:    #2e180c;
+  --cream:      #fdf6ec;
+  --white:      #ffffff;
+  --text-gold:  #f5cf92;
+  --text-muted: rgba(245, 215, 170, 0.75);
+  --border-gold: rgba(229, 179, 106, 0.38);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #140a04;
+}
+
+body {
+  font-family: "Cinzel Decorative", "Jost", serif;
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PAGE CARD ── */
+.page {
+  max-width: 440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  box-shadow: 0 0 60px rgba(0,0,0,0.8);
+}
+
+/* ── BACKGROUND PHOTO COM A SAVANA ── */
+.bg-photo {
+  display: none;
+}
+@keyframes zoomSubtle {
+  from { transform: scale(1.03); }
+  to   { transform: scale(1.0); }
+}
+
+/* Overlays para garantir contraste e legibilidade suave */
+.bg-overlay-top {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(36, 19, 9, 0.28) 0%,
+    transparent 35%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.bg-overlay-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg,
+    rgba(36, 19, 9, 0.95) 0%,
+    rgba(36, 19, 9, 0.75) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── CANTOS DOURADOS SUPERIORES ── */
+.corner {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-color: rgba(229, 179, 106, 0.7);
+  border-style: solid;
+  opacity: 0;
+  z-index: 10;
+  animation: fadeIn 1.2s ease 1s forwards;
+}
+.corner-tl { top: 20px; left: 20px; border-width: 1.5px 0 0 1.5px; }
+.corner-tr { top: 20px; right: 20px; border-width: 1.5px 1.5px 0 0; }
+.corner::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(229, 179, 106, 0.45);
+  border-style: solid;
+}
+.corner-tl::after { top: 4px; left: 4px; border-width: 1px 0 0 1px; }
+.corner-tr::after { top: 4px; right: 4px; border-width: 1px 1px 0 0; }
+
+/* ── CONTEÚDO PRINCIPAL ── */
+.content {
+  width: 100%;
+  max-width: 380px;
+  padding: 0 20px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 4;
+  gap: 6px;
+}
+
+/* ── CABEÇALHO / BÊNÇÃO ── */
+.blessing-top {
+  font-family: "Jost", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.blessing-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #f7d59b;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.gold-diamond {
+  font-size: 7px;
+  color: var(--gold);
+  opacity: 0.85;
+  margin: 2px 0 8px;
+}
+
+/* ── NOMES DOS PAIS (COM O PRIDE ROCK NO CENTRO) ── */
+.names-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+.name-first, .name-second {
+  font-family: "Cinzel Decorative", Georgia, serif;
+  font-size: clamp(48px, 13vw, 58px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.0;
+  color: #fff2db;
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 14px rgba(160, 80, 20, 0.75), 0 0 24px rgba(240, 180, 80, 0.45);
+}
+.lions-spacer {
+  height: clamp(80px, 19vw, 105px);
+  width: 100%;
+}
+.subtitle-day {
+  margin: 0;
+}
+
+/* ── SUBTÍTULOS ── */
+.subtitle-celebrate {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  color: #f2dec9;
+  margin: 12px 0 2px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+}
+.subtitle-day {
+  font-family: "Jost", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* ── NOME DO FILHO (SIMBA) ── */
+.child-name-wrapper {
+  margin: 0 0 2px;
+}
+.child-name {
+  font-family: "Great Vibes", "Alex Brush", cursive;
+  font-size: clamp(54px, 14vw, 68px);
+  font-weight: 400;
+  color: #f8dc9f;
+  line-height: 1.1;
+  display: block;
+  margin: 0;
+  text-shadow: 0 2px 18px rgba(180, 100, 20, 0.8), 0 0 30px rgba(245, 195, 90, 0.55);
+}
+
+/* ── DATA ── */
+.date-block {
+  margin: 0 0 14px;
+}
+.date-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin: 0;
+}
+.date-prefix, .date-suffix {
+  font-family: "Cinzel Decorative", serif;
+  font-size: 19px;
+  font-style: normal;
+  color: #eed6b6;
+  letter-spacing: 0.05em;
+}
+.date-num {
+  font-family: "Cinzel Decorative", serif;
+  font-size: clamp(52px, 14vw, 66px);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #f5cf92;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+}
+.date-month {
+  font-family: "Cinzel Decorative", serif;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 215, 170, 0.7);
+  margin: 4px 0 0;
+}
+
+/* ── LOCAL DA FESTA + STICKER SIMBA ── */
+.location-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 330px;
+  margin: 8px 0 20px;
+  text-align: center;
+  padding: 0 10px;
+}
+.loc-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.loc-icon {
+  font-size: 15px;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}
+.loc-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+.loc-highlight {
+  font-family: "Jost", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #faedd4;
+  margin: 2px 0 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.loc-venue {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 2px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+.loc-address {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #e5d0ba;
+  margin: 0 0 2px;
+}
+.loc-city {
+  font-family: "Jost", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 215, 180, 0.7);
+  margin: 0;
+}
+.simba-cub {
+  position: absolute;
+  right: 4px;
+  bottom: -8px;
+  width: 76px;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+}
+
+/* ── BOTÕES ── */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  padding-bottom: 36px;
+  z-index: 10;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 100px;
+  font-family: "Jost", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn.ghost {
+  border: 1.5px solid rgba(229, 179, 106, 0.4);
+  background: rgba(45, 22, 10, 0.45);
+  color: #faedd4;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.btn.ghost:hover, .btn.ghost:active {
+  background: rgba(229, 179, 106, 0.18);
+  border-color: rgba(245, 207, 146, 0.7);
+  transform: translateY(-1px);
+}
+.btn.solid {
+  border: none;
+  background: linear-gradient(135deg, #d8a86a 0%, #ba8446 100%);
+  color: #241309;
+  font-weight: 700;
+  box-shadow: 0 4px 22px rgba(186, 132, 70, 0.45);
+}
+.btn.solid:hover, .btn.solid:active {
+  background: linear-gradient(135deg, #e5b97d 0%, #c99354 100%);
+  box-shadow: 0 6px 28px rgba(186, 132, 70, 0.6);
+  transform: translateY(-1px);
+}
+.btn-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* ── ANIMAÇÕES DE ENTRADA SUAVE ── */
+.anim-1 { opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+.anim-2 { opacity: 0; animation: fadeUp 0.8s ease 0.35s forwards; }
+.anim-3 { opacity: 0; animation: fadeUp 1.0s ease 0.5s forwards; }
+.anim-4 { opacity: 0; animation: fadeUp 0.8s ease 0.7s forwards; }
+.anim-5 { opacity: 0; animation: fadeUp 0.9s ease 0.85s forwards; }
+.anim-6 { opacity: 0; animation: fadeUp 0.9s ease 1.0s forwards; }
+.anim-7 { opacity: 0; animation: fadeUp 0.9s ease 1.15s forwards; }
+.anim-8 { opacity: 0; animation: fadeUp 1.0s ease 1.3s forwards; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── MODAL MENSAGEM DOS PAIS ── */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+}
+.modal.open { display: flex; }
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 9, 4, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modal-box {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(77, 42, 20, 0.98) 0%, rgba(33, 18, 10, 0.98) 100%);
+  width: 100%;
+  max-width: 440px;
+  max-height: 88vh;
+  border-radius: 28px 28px 0 0;
+  padding: 8px 28px 36px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.32,0,0.15,1);
+  box-shadow: 0 -12px 42px rgba(0,0,0,0.58);
+  color: #f9ead1;
+  border-top: 1px solid rgba(245, 207, 146, 0.35);
+}
+.modal.open .modal-box { transform: translateY(0); }
+.modal-box::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: rgba(245, 207, 146, 0.5);
+  border-radius: 2px;
+  margin: 8px auto 18px;
+}
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(245, 207, 146, 0.35);
+  border-radius: 50%;
+  background: transparent;
+  color: #f7d7a3;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.18s;
+}
+.modal-close:hover { background: rgba(245, 207, 146, 0.12); }
+.modal-lion {
+  font-size: 38px;
+  text-align: center;
+  margin: 4px 0 2px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+}
+.modal-title {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 500;
+  font-style: italic;
+  color: #fbe7b8;
+  text-align: center;
+  margin: 0 0 16px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.modal-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: #f8eeda;
+  text-align: center;
+  background: rgba(255, 249, 239, 0.06);
+  border: 1px solid rgba(245, 207, 146, 0.25);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.modal-text p { margin: 0; }
+.modal-text strong {
+  color: #fff5df;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px rgba(245, 207, 146, 0.18);
+}
+.modal-closing { font-style: italic; color: #f0c77c; margin-top: 4px !important; }
+.modal-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 10px;
+}
+.modal-divider span:first-child,
+.modal-divider span:last-child {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f0c77c, transparent);
+  opacity: 0.6;
+}
+.diamond { font-size: 9px; color: #f0c77c; opacity: 0.8; line-height: 1; display: block; }
+.modal-names {
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-style: italic;
+  color: #f5dba6;
+  text-align: center;
+  margin: 0;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 380px) {
+  .name-first, .name-second { font-size: 44px; }
+  .child-name { font-size: 50px; }
+  .date-num { font-size: 52px; }
+  .simba-cub { width: 66px; }
+}
