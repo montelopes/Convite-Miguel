@@ -7,6 +7,12 @@ const audio = document.getElementById("bg-audio");
 if (audio) {
   let started = false;
 
+  // Restaura a posição salva da música
+  const savedTime = parseFloat(localStorage.getItem("audioTime"));
+  if (!isNaN(savedTime)) {
+    audio.currentTime = savedTime;
+  }
+
   function startMusic() {
     if (started) return;
 
@@ -20,6 +26,20 @@ if (audio) {
       started = false;
     });
   }
+
+  // Salva a posição da música periodicamente
+  setInterval(() => {
+    if (started && !audio.paused) {
+      localStorage.setItem("audioTime", audio.currentTime);
+    }
+  }, 500);
+
+  // Salva a posição ao sair da página
+  window.addEventListener("beforeunload", () => {
+    if (started) {
+      localStorage.setItem("audioTime", audio.currentTime);
+    }
+  });
 
   // Inicia a música quando o visitante interagir com a página
   ["pointerdown", "touchstart", "keydown", "scroll"].forEach((eventName) => {

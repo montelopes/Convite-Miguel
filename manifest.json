@@ -1,0 +1,10 @@
+{
+  "name": "1º Aninho do Miguel",
+  "short_name": "Miguel 1 Ano",
+  "description": "Convite para o 1º aniversário do Miguel",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a0f00",
+  "theme_color": "#c8a45a",
+  "icons": []
+}
