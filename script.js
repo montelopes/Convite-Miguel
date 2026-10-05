@@ -38,8 +38,8 @@ const backBtn = document.getElementById("backToInvite");
 
 function showConfirm() {
   if (!inviteSection || !confirmSection) return;
+  closeModal();
   inviteSection.style.display = "none";
-  document.getElementById("modal").style.display = "none";
   confirmSection.style.display = "flex";
   window.scrollTo(0, 0);
 }
@@ -48,6 +48,9 @@ function showInvite() {
   if (!inviteSection || !confirmSection) return;
   confirmSection.style.display = "none";
   inviteSection.style.display = "flex";
+  if (modal) {
+    modal.style.removeProperty("display");
+  }
   window.scrollTo(0, 0);
 }
 
