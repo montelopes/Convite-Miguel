@@ -172,7 +172,7 @@ if (rsvpForm) {
     }
 
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/5561996985008?text=${encoded}`, "_blank");
+    window.open(`https://wa.me/556196642823?text=${encoded}`, "_blank");
 
     if (feedback) {
       feedback.textContent = "Mensagem aberta no WhatsApp! ✓";

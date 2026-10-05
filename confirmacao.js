@@ -161,7 +161,7 @@ if (rsvpForm) {
     const encoded = encodeURIComponent(msg);
 
     window.open(
-      `https://wa.me/5561996985008?text=${encoded}`,
+      `https://wa.me/556196642823?text=${encoded}`,
       "_blank"
     );
 
