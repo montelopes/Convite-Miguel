@@ -1,33 +1,84 @@
 
 "use strict";
 
-// ── MÚSICA DE FUNDO (nunca para entre as seções) ─────────────────────────────
+// ── MÚSICA DE FUNDO (toca no carregamento e sincroniza entre páginas) ─────────
 (function () {
   const audio = document.getElementById("bg-audio");
-
   if (!audio) return;
 
-  let started = false;
+  audio.volume = 0.18;
+  audio.loop = true;
+
+  // Restaura a posição salva da música (compartilhada entre convite e confirmação)
+  function applySavedTime() {
+    const savedTime = parseFloat(localStorage.getItem("audioTime"));
+    if (!isNaN(savedTime) && isFinite(savedTime) && savedTime > 0) {
+      try {
+        if (!audio.duration || savedTime < audio.duration) {
+          audio.currentTime = savedTime;
+        } else {
+          audio.currentTime = savedTime % audio.duration;
+        }
+      } catch (_) {}
+    }
+  }
+
+  applySavedTime();
+  if (audio.readyState < 1) {
+    audio.addEventListener("loadedmetadata", applySavedTime, { once: true });
+    audio.addEventListener("canplay", applySavedTime, { once: true });
+  }
 
   function startMusic() {
-    if (started) return;
+    if (!audio.paused) return;
 
     audio.volume = 0.18;
     audio.loop = true;
+    applySavedTime();
 
-    audio.play()
-      .then(() => {
-        started = true;
-      })
-      .catch(() => {});
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Bloqueio de autoplay estrito pelo navegador até primeira interação
+      });
+    }
   }
 
-  ["pointerdown", "touchstart", "keydown", "scroll"].forEach((eventName) => {
-    document.addEventListener(eventName, startMusic, {
-      passive: true,
-      once: true
-    });
+  // Inicia imediatamente ao carregar a página sem precisar interagir
+  startMusic();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startMusic);
+  }
+  window.addEventListener("load", startMusic);
+  window.addEventListener("pageshow", startMusic);
+
+  // Fallback caso o navegador bloqueie autoplay antes de qualquer interação
+  const userEvents = ["pointerdown", "touchstart", "click", "keydown", "scroll"];
+  function handleInteraction() {
+    if (audio.paused) {
+      startMusic();
+    }
+  }
+
+  userEvents.forEach((eventName) => {
+    document.addEventListener(eventName, handleInteraction, { passive: true });
   });
+
+  // Salva a posição continuamente para manter sincronizado com a confirmação
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.paused && audio.currentTime > 0) {
+      localStorage.setItem("audioTime", audio.currentTime.toString());
+    }
+  });
+
+  const saveAudioTime = () => {
+    if (!audio.paused && audio.currentTime > 0) {
+      localStorage.setItem("audioTime", audio.currentTime.toString());
+    }
+  };
+
+  window.addEventListener("pagehide", saveAudioTime);
+  window.addEventListener("beforeunload", saveAudioTime);
 })();
 
 // ── NAVEGAÇÃO SPA (convite ↔ confirmação sem recarregar) ─────────────────────
@@ -151,7 +202,6 @@ if (rsvpForm) {
     const phone = document.getElementById("guest-phone").value.trim();
     const count = countInput ? countInput.value : "1";
     const attendance = document.querySelector('input[name="attendance"]:checked')?.value || "Sim";
-    const note = document.getElementById("guest-note").value.trim();
 
     if (!name || !phone) {
       if (feedback) {
@@ -167,10 +217,6 @@ if (rsvpForm) {
     msg += `*Telefone:* ${phone}\n`;
     msg += `*Pessoas:* ${count}\n`;
     msg += `*Presença:* ${attendance}\n`;
-
-    if (note) {
-      msg += `*Obs:* ${note}\n`;
-    }
 
     const encoded = encodeURIComponent(msg);
     window.open(`https://api.whatsapp.com/send?phone=556196642823&text=${encoded}`, "_blank");

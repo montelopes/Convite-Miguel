@@ -1,53 +1,83 @@
 
 "use strict";
 
-// ── MÚSICA DE FUNDO ──────────────────────────────────────────────────────────
+// ── MÚSICA DE FUNDO (toca no carregamento e sincroniza entre páginas) ─────────
 const audio = document.getElementById("bg-audio");
 
 if (audio) {
-  let started = false;
+  audio.volume = 0.18;
+  audio.loop = true;
 
-  // Restaura a posição salva da música
-  const savedTime = parseFloat(localStorage.getItem("audioTime"));
-  if (!isNaN(savedTime)) {
-    audio.currentTime = savedTime;
+  // Restaura a posição salva da música (compartilhada entre convite e confirmação)
+  function applySavedTime() {
+    const savedTime = parseFloat(localStorage.getItem("audioTime"));
+    if (!isNaN(savedTime) && isFinite(savedTime) && savedTime > 0) {
+      try {
+        if (!audio.duration || savedTime < audio.duration) {
+          audio.currentTime = savedTime;
+        } else {
+          audio.currentTime = savedTime % audio.duration;
+        }
+      } catch (_) {}
+    }
+  }
+
+  applySavedTime();
+  if (audio.readyState < 1) {
+    audio.addEventListener("loadedmetadata", applySavedTime, { once: true });
+    audio.addEventListener("canplay", applySavedTime, { once: true });
   }
 
   function startMusic() {
-    if (started) return;
-
-    started = true;
+    if (!audio.paused) return;
 
     audio.volume = 0.18;
     audio.loop = true;
+    applySavedTime();
 
-    audio.play().catch(() => {
-      // O navegador pode bloquear o áudio até uma interação do usuário.
-      started = false;
-    });
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Bloqueio de autoplay estrito pelo navegador até primeira interação
+      });
+    }
   }
 
-  // Salva a posição da música periodicamente
-  setInterval(() => {
-    if (started && !audio.paused) {
-      localStorage.setItem("audioTime", audio.currentTime);
-    }
-  }, 500);
+  // Inicia imediatamente ao carregar a página sem precisar interagir
+  startMusic();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startMusic);
+  }
+  window.addEventListener("load", startMusic);
+  window.addEventListener("pageshow", startMusic);
 
-  // Salva a posição ao sair da página
-  window.addEventListener("beforeunload", () => {
-    if (started) {
-      localStorage.setItem("audioTime", audio.currentTime);
+  // Fallback caso o navegador bloqueie autoplay antes de qualquer interação
+  const userEvents = ["pointerdown", "touchstart", "click", "keydown", "scroll"];
+  function handleInteraction() {
+    if (audio.paused) {
+      startMusic();
+    }
+  }
+
+  userEvents.forEach((eventName) => {
+    document.addEventListener(eventName, handleInteraction, { passive: true });
+  });
+
+  // Salva a posição continuamente para manter sincronizado com o convite principal
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.paused && audio.currentTime > 0) {
+      localStorage.setItem("audioTime", audio.currentTime.toString());
     }
   });
 
-  // Inicia a música quando o visitante interagir com a página
-  ["pointerdown", "touchstart", "keydown", "scroll"].forEach((eventName) => {
-    document.addEventListener(eventName, startMusic, {
-      passive: true,
-      once: true
-    });
-  });
+  const saveAudioTime = () => {
+    if (!audio.paused && audio.currentTime > 0) {
+      localStorage.setItem("audioTime", audio.currentTime.toString());
+    }
+  };
+
+  window.addEventListener("pagehide", saveAudioTime);
+  window.addEventListener("beforeunload", saveAudioTime);
 }
 
 
@@ -126,12 +156,6 @@ if (rsvpForm) {
         'input[name="attendance"]:checked'
       )?.value || "Sim";
 
-    const note = document
-      .getElementById("guest-note")
-      .value
-      .trim();
-
-
     if (!name || !phone) {
       if (feedback) {
         feedback.textContent =
@@ -144,7 +168,6 @@ if (rsvpForm) {
       return;
     }
 
-
     const lion = "\uD83E\uDD81";
     let msg =
       "Olá! " + lion + " Confirmação de presença - 1º Aninho do Miguel:\n\n";
@@ -153,10 +176,6 @@ if (rsvpForm) {
     msg += `*Telefone:* ${phone}\n`;
     msg += `*Pessoas:* ${count}\n`;
     msg += `*Presença:* ${attendance}\n`;
-
-    if (note) {
-      msg += `*Obs:* ${note}\n`;
-    }
 
 
     const encoded = encodeURIComponent(msg);
