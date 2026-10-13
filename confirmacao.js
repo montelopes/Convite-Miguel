@@ -1,39 +1,30 @@
 
 "use strict";
 
-// ── MÚSICA DE FUNDO (toca no carregamento e sincroniza entre páginas) ─────────
-const audio = document.getElementById("bg-audio");
+// ── MÚSICA DE FUNDO (toca do início no carregamento e reinicia ao voltar) ────
+(function () {
+  const audio = document.getElementById("bg-audio");
+  if (!audio) return;
 
-if (audio) {
+  // Limpa qualquer posição salva residual anterior
+  try {
+    localStorage.removeItem("audioTime");
+    sessionStorage.removeItem("audioTime");
+  } catch (_) {}
+
   audio.volume = 0.18;
   audio.loop = true;
-
-  // Restaura a posição salva da música (compartilhada entre convite e confirmação)
-  function applySavedTime() {
-    const savedTime = parseFloat(localStorage.getItem("audioTime"));
-    if (!isNaN(savedTime) && isFinite(savedTime) && savedTime > 0) {
-      try {
-        if (!audio.duration || savedTime < audio.duration) {
-          audio.currentTime = savedTime;
-        } else {
-          audio.currentTime = savedTime % audio.duration;
-        }
-      } catch (_) {}
-    }
-  }
-
-  applySavedTime();
-  if (audio.readyState < 1) {
-    audio.addEventListener("loadedmetadata", applySavedTime, { once: true });
-    audio.addEventListener("canplay", applySavedTime, { once: true });
-  }
+  try {
+    audio.currentTime = 0;
+  } catch (_) {}
 
   function startMusic() {
-    if (!audio.paused) return;
+    if (document.hidden) return;
 
     audio.volume = 0.18;
     audio.loop = true;
-    applySavedTime();
+
+    if (!audio.paused) return;
 
     const playPromise = audio.play();
     if (playPromise !== undefined) {
@@ -43,18 +34,64 @@ if (audio) {
     }
   }
 
-  // Inicia imediatamente ao carregar a página sem precisar interagir
-  startMusic();
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startMusic);
+  function stopAndResetMusic() {
+    audio.pause();
+    try {
+      audio.currentTime = 0;
+    } catch (_) {}
   }
-  window.addEventListener("load", startMusic);
-  window.addEventListener("pageshow", startMusic);
+
+  // Inicia imediatamente ao carregar a página
+  startMusic();
+
+  if (audio.readyState < 3) {
+    audio.addEventListener("canplay", () => {
+      if (audio.paused) {
+        startMusic();
+      }
+    }, { once: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      startMusic();
+    });
+  }
+  window.addEventListener("load", () => {
+    if (audio.paused) {
+      startMusic();
+    }
+  });
+  window.addEventListener("pageshow", () => {
+    try {
+      audio.currentTime = 0;
+    } catch (_) {}
+    startMusic();
+  });
+
+  // Ao sair do navegador, minimizar ou trocar de aba: pausa e zera a música
+  // Ao retornar para o convite/navegador: recomeça do início
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAndResetMusic();
+    } else {
+      try {
+        audio.currentTime = 0;
+      } catch (_) {}
+      startMusic();
+    }
+  });
+
+  window.addEventListener("pagehide", stopAndResetMusic);
+  window.addEventListener("beforeunload", stopAndResetMusic);
 
   // Fallback caso o navegador bloqueie autoplay antes de qualquer interação
   const userEvents = ["pointerdown", "touchstart", "click", "keydown", "scroll"];
   function handleInteraction() {
     if (audio.paused) {
+      try {
+        audio.currentTime = 0;
+      } catch (_) {}
       startMusic();
     }
   }
@@ -62,23 +99,7 @@ if (audio) {
   userEvents.forEach((eventName) => {
     document.addEventListener(eventName, handleInteraction, { passive: true });
   });
-
-  // Salva a posição continuamente para manter sincronizado com o convite principal
-  audio.addEventListener("timeupdate", () => {
-    if (!audio.paused && audio.currentTime > 0) {
-      localStorage.setItem("audioTime", audio.currentTime.toString());
-    }
-  });
-
-  const saveAudioTime = () => {
-    if (!audio.paused && audio.currentTime > 0) {
-      localStorage.setItem("audioTime", audio.currentTime.toString());
-    }
-  };
-
-  window.addEventListener("pagehide", saveAudioTime);
-  window.addEventListener("beforeunload", saveAudioTime);
-}
+})();
 
 
 // ── CONTADOR + / − ───────────────────────────────────────────────────────────
