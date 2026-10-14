@@ -41,9 +41,16 @@ body {
   box-shadow: 0 0 60px rgba(0,0,0,0.8);
 }
 
-/* ── BACKGROUND PHOTO COM A SAVANA ── */
+/* ── BACKGROUND PHOTO COM A FOTO DO MIGUEL ── */
 .bg-photo {
-  display: none;
+  position: absolute;
+  inset: 0;
+  background-image: url("./imagens/CFF_8997.JPG");
+  background-size: cover;
+  background-position: 58% center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  animation: zoomSubtle 6s ease-out forwards;
 }
 @keyframes zoomSubtle {
   from { transform: scale(1.03); }
