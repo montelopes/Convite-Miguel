@@ -108,16 +108,37 @@ body {
 .content {
   width: 100%;
   max-width: 380px;
-  padding: 0 20px;
+  min-height: 100vh;
+  padding: 8px 20px 20px;
   text-align: center;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: relative;
   z-index: 4;
-  gap: 6px;
+  box-sizing: border-box;
+}
+
+/* ── BLOCO SUPERIOR (MIGUEL + DATA/HORA) ── */
+.top-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+/* ── BLOCO INFERIOR (LOCAL + BOTÕES) ── */
+.bottom-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 /* ── CABEÇALHO / BÊNÇÃO ── */
@@ -215,7 +236,7 @@ body {
 
 /* ── DATA ── */
 .date-block {
-  margin: 0 0 14px;
+  margin: 0;
 }
 .date-row {
   display: flex;
@@ -253,7 +274,7 @@ body {
   position: relative;
   width: 100%;
   max-width: 330px;
-  margin: 8px 0 20px;
+  margin: 0;
   text-align: center;
   padding: 0 10px;
 }
@@ -324,10 +345,10 @@ body {
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   max-width: 320px;
-  padding-bottom: 36px;
+  padding-bottom: 8px;
   z-index: 10;
 }
 .btn {
