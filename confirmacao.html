@@ -48,13 +48,28 @@
           <label for="guest-phone">Telefone (WhatsApp)</label>
           <input id="guest-phone" name="guestPhone" type="tel" inputmode="tel" required maxlength="20" placeholder="(61) 99999-9999" />
         </div>
-        <div class="field">
-          <label for="guest-count">Total de pessoas (incluindo você)</label>
-          <div class="number-input">
-            <button type="button" class="num-btn" id="decreaseBtn">−</button>
-            <input id="guest-count" name="guestCount" type="number" min="1" max="10" value="1" required readonly />
-            <button type="button" class="num-btn" id="increaseBtn">+</button>
+        <div class="field" id="field-guest-count">
+          <label for="guest-count">Total de pessoas (incluindo você) <span class="required-mark">*</span></label>
+          <div class="select-wrapper">
+            <select id="guest-count" name="guestCount" required class="placeholder-active">
+              <option value="" disabled selected>Selecione a quantidade de pessoas</option>
+              <option value="1">1 pessoa (Apenas eu)</option>
+              <option value="2">2 pessoas</option>
+              <option value="3">3 pessoas</option>
+              <option value="4">4 pessoas</option>
+              <option value="5">5 pessoas</option>
+              <option value="6">6 pessoas</option>
+              <option value="7">7 pessoas</option>
+              <option value="8">8 pessoas</option>
+              <option value="9">9 pessoas</option>
+              <option value="10">10 pessoas</option>
+            </select>
           </div>
+        </div>
+        <div class="field companion-field" id="companion-field" style="display: none;">
+          <label for="companion-names" id="companion-label">Nome do acompanhante <span class="required-mark">*</span></label>
+          <textarea id="companion-names" name="companionNames" rows="2" maxlength="250" placeholder="Nome completo de quem vai com você"></textarea>
+          <span class="field-hint" id="companion-hint">Informe o nome completo de quem irá com você</span>
         </div>
         <div class="field">
           <label>Você poderá comparecer?</label>
