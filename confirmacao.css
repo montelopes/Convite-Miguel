@@ -44,7 +44,7 @@ body {
   width: 100%;
   min-height: 400px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   overflow: hidden;
   background:
@@ -58,12 +58,35 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(180deg, rgba(15, 12, 9, 0.05) 0%, rgba(15, 12, 9, 0.15) 60%, rgba(18, 13, 9, 0.70) 100%),
+    linear-gradient(180deg, rgba(15, 12, 9, 0.05) 0%, rgba(15, 12, 9, 0.12) 45%, rgba(15, 12, 9, 0.88) 100%),
     url("./imagens/FotoM.jpeg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
+  animation: heroPhotoIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Efeito de entrada: a foto surge com fade + zoom suave */
+@keyframes heroPhotoIn {
+  from { opacity: 0; transform: scale(1.18); filter: blur(6px); }
+  to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+}
+
+/* Nome sobe suavemente depois da foto */
+@keyframes heroNameIn {
+  from { opacity: 0; transform: translateY(14px); letter-spacing: 0.18em; }
+  to   { opacity: 1; transform: translateY(0);    letter-spacing: 0.08em; }
+}
+
+/* Linha dourada se abre do centro */
+@keyframes heroLineIn {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo, .hero-names, .hero-divider { animation: none !important; }
 }
 
 .hero-glow {
@@ -93,7 +116,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 28px 20px 20px;
+  padding: 0 20px 14px;
 }
 
 .hero-blessing {
@@ -111,7 +134,8 @@ body {
   align-items: center;
   width: min(100%, 200px);
   gap: 8px;
-  margin: 0 0 10px;
+  margin: 0 0 6px;
+  animation: heroLineIn 1.2s ease 0.7s both;
 }
 .hero-divider span:first-child,
 .hero-divider span:last-child {
@@ -142,7 +166,8 @@ body {
   margin: 0;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  text-shadow: 0 2px 22px rgba(209, 156, 72, 0.32);
+  text-shadow: 0 2px 22px rgba(209, 156, 72, 0.32), 0 2px 14px rgba(0, 0, 0, 0.7);
+  animation: heroNameIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
 }
 
 .form-section {
@@ -441,7 +466,7 @@ select option:disabled {
 }
 
 @media (max-width: 360px) {
-  .hero-content { padding-top: 20px; }
+  .hero-content { padding-bottom: 10px; }
   .deadline-banner { letter-spacing: 0.08em; }
   .btn-submit { letter-spacing: 0.1em; }
 }
