@@ -46,11 +46,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   background:
     radial-gradient(circle at top center, rgba(241, 199, 125, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(15, 12, 9, 0.55), rgba(18, 13, 9, 0.85)),
-    url("./imagens/FotoM.jpg") center / cover no-repeat;
+    linear-gradient(180deg, rgba(15, 12, 9, 0.96), rgba(28, 19, 14, 0.94));
   border-bottom: 1px solid rgba(241, 199, 125, 0.18);
+}
+
+/* ── FOTO DE FUNDO DO TOPO ── */
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, rgba(15, 12, 9, 0.35), rgba(18, 13, 9, 0.75)),
+    url("./imagens/FotoM.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
 .hero::before {
@@ -59,12 +72,14 @@ body {
   inset: 12px 18px 0;
   border: 1px solid rgba(241, 199, 125, 0.16);
   border-bottom: none;
+  z-index: 1;
 }
 
 .hero-glow {
   position: absolute;
   inset: 0;
   background: linear-gradient(120deg, transparent 0%, rgba(241, 199, 125, 0.04) 50%, transparent 100%);
+  z-index: 1;
 }
 
 .corner {
@@ -439,4 +454,3 @@ select option:disabled {
   .deadline-banner { letter-spacing: 0.08em; }
   .btn-submit { letter-spacing: 0.1em; }
 }
-
