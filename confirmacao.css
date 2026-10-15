@@ -48,7 +48,8 @@ body {
   justify-content: center;
   background:
     radial-gradient(circle at top center, rgba(241, 199, 125, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(15, 12, 9, 0.96), rgba(28, 19, 14, 0.94));
+    linear-gradient(180deg, rgba(15, 12, 9, 0.55), rgba(18, 13, 9, 0.85)),
+    url("./imagens/FotoM.jpg") center / cover no-repeat;
   border-bottom: 1px solid rgba(241, 199, 125, 0.18);
 }
 
